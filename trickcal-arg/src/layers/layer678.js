@@ -16,8 +16,8 @@ export function renderLayer6(app, ctx) {
       </div>
       <div class="dc-header">
         <div>
-          <div class="dc-gall-name">트릭컬 갤러리</div>
-          <div class="dc-gall-sub">트릭컬 갤러리</div>
+          <div class="dc-gall-name">트릭컬 리바이브 갤러리</div>
+          <div class="dc-gall-sub">트릭컬 리바이브 팬 갤러리</div>
         </div>
         <button class="dc-subscribe">갤러리 구독</button>
       </div>
@@ -37,13 +37,13 @@ export function renderLayer6(app, ctx) {
             <div class="dc-post-body">
               <p>안녕하세요 트릭컬 팬게임 만들었습니다</p><br>
               <div class="dc-post-img-ph">[게임 스크린샷]</div><br>
-              <p>추리게임 느낌으로 만들었구요. 대충 증거 수집해서 범인 밝히는 게임이에요.</p>
+              <p>역전재판이랑 단간론파 좋아하는 분들 재밌게 하실 것 같아요</p>
               <p>에르핀 네르 마카샤 죠안 등등 나옵니다</p>
               <p style="color:#e63312;font-weight:700;">▶ 플레이 링크: [삭제됨]</p>
             </div>
             <div class="dc-rec-area">
-              <button class="dc-rec-btn dc-rec-btn--up">👍 추천 38</button>
-              <button class="dc-rec-btn dc-rec-btn--down">👎 비추천 1</button>
+              <button class="dc-rec-btn dc-rec-btn--up" id="dc-rec-up">👍 추천 <span id="dc-rec-count">38</span></button>
+              <button class="dc-rec-btn dc-rec-btn--down" id="dc-rec-down">👎 비추천 <span id="dc-down-count">1</span></button>
             </div>
             <div class="dc-comments">
               <div class="dc-comments-title">댓글 <span id="dc-count">0</span>개</div>
@@ -59,9 +59,34 @@ export function renderLayer6(app, ctx) {
   const countEl = document.getElementById('dc-count');
   const timers = [];
   let count = 0;
-  const all = [...nicknames, '???'];
 
-  all.forEach((nick, i) => {
+  // 추천/비추천 버튼 (클릭할 때마다 반영, 한 번 누르면 토글)
+  const recUpBtn = document.getElementById('dc-rec-up');
+  const recDownBtn = document.getElementById('dc-rec-down');
+  let recUp = false, recDown = false;
+  recUpBtn?.addEventListener('click', () => {
+    const el = document.getElementById('dc-rec-count');
+    recUp = !recUp;
+    el.textContent = 38 + (recUp ? 1 : 0);
+    recUpBtn.style.color = recUp ? '#e63312' : '';
+  });
+  recDownBtn?.addEventListener('click', () => {
+    const el = document.getElementById('dc-down-count');
+    recDown = !recDown;
+    el.textContent = 1 + (recDown ? 1 : 0);
+    recDownBtn.style.color = recDown ? '#3344aa' : '';
+  });
+
+  // 실제 닉네임이 몇 개 없어도 자연스러운 속도로 보이도록 분위기용 필러 댓글을 앞에 섞음
+  const filler = [
+    { nick: 'ㅇㅇ',   text: '오 이거 뭐임' },
+    { nick: '트갤러', text: '오 재밌겠다 링크 어디' },
+  ];
+  const real = nicknames.map(n => ({ nick: n, text: '해봤음 ㄷㄷ' }));
+  const all = [...filler, ...real, { nick: '???', text: '보고 있어' }];
+
+  all.forEach((item, i) => {
+    const nick = item.nick;
     const t = setTimeout(() => {
       count++;
       if (countEl) countEl.textContent = count;
@@ -73,7 +98,7 @@ export function renderLayer6(app, ctx) {
           <span class="dc-comment-user">${isOdd ? '&nbsp;' : nick}</span>
           <span>|</span><span>${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}</span>
         </div>
-        <div class="dc-comment-text">${isOdd ? '보고 있어' : '해봤음 ㄷㄷ'}</div>
+        <div class="dc-comment-text">${item.text}</div>
       `;
       list.appendChild(div);
       list.scrollTop = list.scrollHeight;
@@ -82,10 +107,10 @@ export function renderLayer6(app, ctx) {
         const t2 = setTimeout(() => {
           document.querySelector('.l6-wrap').classList.add('fade-out');
           setTimeout(ctx.next, 900);
-        }, 3000);
+        }, 5000);
         timers.push(t2);
       }
-    }, i * 1200);
+    }, 1800 + i * 2200 + Math.floor(Math.random() * 400));
     timers.push(t);
   });
 
@@ -101,7 +126,7 @@ export function renderLayer7(app, ctx) {
     <div class="l7-wrap fade-in">
       <div class="l7-title">// ACCESS LOG</div>
       <div class="l7-logs" id="log-list"></div>
-      <div class="l7-final" id="log-final">왜 이렇게 순진해?</div>
+      <div class="l7-final" id="log-final">처음부터 나오면 안 됐어</div>
     </div>
   `;
 
@@ -216,7 +241,7 @@ export function renderLayer8(app, ctx) {
     }, 8000));
   }
 
-  const KEYWORDS = ['몰라', '꿈', '모르겠어', '모르겠다','모르겠어요','모르겠는데요'];
+  const KEYWORDS = ['몰라', '꿈', '모르겠어', '모르겠다'];
   let answered = false;
 
   const handleSend = (val) => {
@@ -234,7 +259,7 @@ export function renderLayer8(app, ctx) {
           setTimeout(ctx.next, 900);
         }, 2000));
       } else {
-        addMsg('', '그게 아닌 것 같은데', true);
+        addMsg('', '다시 생각하는 게 좋을 거야', true);
         timers.push(setTimeout(() => {
           addLoop(8);
           document.querySelector('.l8-wrap').classList.add('fade-out');
@@ -250,7 +275,7 @@ export function renderLayer8(app, ctx) {
     send.addEventListener('click', () => { handleSend(input.value); input.value = ''; });
     input.addEventListener('keydown', e => { if (e.key === 'Enter') { handleSend(input.value); input.value = ''; } });
   } else {
-    timers.push(setTimeout(() => addMsg('', '모르면 모른다고 해.', true), 10000));
+    timers.push(setTimeout(() => addMsg('', '몰라... 라고 해봐', true), 10000));
     timers.push(setTimeout(() => {
       document.querySelector('.l8-wrap').classList.add('fade-out');
       setTimeout(ctx.next, 900);
@@ -273,4 +298,4 @@ export function renderLayer8(app, ctx) {
   timers.push(noAnswerTimer);
 
   return () => timers.forEach(clearTimeout);
-                      }
+                   }
