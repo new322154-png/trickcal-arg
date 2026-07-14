@@ -16,8 +16,8 @@ export function renderLayer6(app, ctx) {
       </div>
       <div class="dc-header">
         <div>
-          <div class="dc-gall-name">트릭컬 리바이브 갤러리</div>
-          <div class="dc-gall-sub">트릭컬 리바이브 팬 갤러리</div>
+          <div class="dc-gall-name">트릭컬 갤러리</div>
+          <div class="dc-gall-sub">트릭컬 갤러리</div>
         </div>
         <button class="dc-subscribe">갤러리 구독</button>
       </div>
@@ -37,7 +37,7 @@ export function renderLayer6(app, ctx) {
             <div class="dc-post-body">
               <p>안녕하세요 트릭컬 팬게임 만들었습니다</p><br>
               <div class="dc-post-img-ph">[게임 스크린샷]</div><br>
-              <p>역전재판이랑 단간론파 좋아하는 분들 재밌게 하실 것 같아요</p>
+              <p>추리게임 느낌으로 만들었구요. 대충 증거 수집해서 범인 밝히는 게임이에요.</p>
               <p>에르핀 네르 마카샤 죠안 등등 나옵니다</p>
               <p style="color:#e63312;font-weight:700;">▶ 플레이 링크: [삭제됨]</p>
             </div>
@@ -101,7 +101,7 @@ export function renderLayer7(app, ctx) {
     <div class="l7-wrap fade-in">
       <div class="l7-title">// ACCESS LOG</div>
       <div class="l7-logs" id="log-list"></div>
-      <div class="l7-final" id="log-final">처음부터 나오면 안 됐어</div>
+      <div class="l7-final" id="log-final">왜 이렇게 순진해?</div>
     </div>
   `;
 
@@ -167,16 +167,16 @@ export function renderLayer8(app, ctx) {
   const timers = [];
 
   app.innerHTML = `
-    <div class="l2-wrap l8-wrap fade-in" style="flex-direction:row;min-height:100vh;">
-      <div class="l8-stream-area" style="flex:1;background:#000;display:flex;align-items:center;justify-content:center;">
+    <div class="l8-wrap fade-in">
+      <div class="l8-stream-area">
         <div style="color:#1a1a1a;font-size:48px;font-family:monospace;">[방송 종료]</div>
       </div>
-      <div class="chzzk-chat" style="width:320px;background:#131317;border-left:1px solid #2a2a2e;display:flex;flex-direction:column;height:100vh;position:sticky;top:0;">
+      <div class="l8-chat">
         <div class="chzzk-chat-header">
           <span class="chzzk-chat-title">채팅</span>
           <span class="chzzk-chat-setting">⚙</span>
         </div>
-        <div class="chzzk-chat-messages" id="chat8" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:6px;"></div>
+        <div class="chzzk-chat-messages" id="chat8"></div>
         ${!inputHidden ? `
         <div class="chzzk-chat-input-area">
           <input class="chzzk-chat-input" id="chat8-input" placeholder="채팅을 입력하세요" />
@@ -216,7 +216,7 @@ export function renderLayer8(app, ctx) {
     }, 8000));
   }
 
-  const KEYWORDS = ['몰라', '꿈', '모르겠어', '모르겠다'];
+  const KEYWORDS = ['몰라', '꿈', '모르겠어', '모르겠다','모르겠어요','모르겠는데요'];
   let answered = false;
 
   const handleSend = (val) => {
@@ -250,7 +250,7 @@ export function renderLayer8(app, ctx) {
     send.addEventListener('click', () => { handleSend(input.value); input.value = ''; });
     input.addEventListener('keydown', e => { if (e.key === 'Enter') { handleSend(input.value); input.value = ''; } });
   } else {
-    timers.push(setTimeout(() => addMsg('', '몰라... 라고 해봐', true), 10000));
+    timers.push(setTimeout(() => addMsg('', '모르면 모른다고 해.', true), 10000));
     timers.push(setTimeout(() => {
       document.querySelector('.l8-wrap').classList.add('fade-out');
       setTimeout(ctx.next, 900);
@@ -273,4 +273,4 @@ export function renderLayer8(app, ctx) {
   timers.push(noAnswerTimer);
 
   return () => timers.forEach(clearTimeout);
-}
+                      }
