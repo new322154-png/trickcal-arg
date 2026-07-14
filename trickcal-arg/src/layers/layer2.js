@@ -57,9 +57,9 @@ export function renderLayer2(app, ctx) {
               </div>
             </div>
             <div class="chzzk-info-btns">
-              <button class="chzzk-btn-like">🤍 1.2K</button>
-              <button class="chzzk-btn-share">공유</button>
-              <button class="chzzk-btn-donate">치즈 후원</button>
+              <button class="chzzk-btn-like" id="like-btn">🤍 <span id="like-count">1.2K</span></button>
+              <button class="chzzk-btn-share" id="share-btn">공유</button>
+              <button class="chzzk-btn-donate" id="donate-btn">치즈 후원</button>
             </div>
           </div>
         </div>
@@ -82,6 +82,7 @@ export function renderLayer2(app, ctx) {
           </div>
         </div>
       </div>
+      <div class="chzzk-toast" id="chzzk-toast"></div>
     </div>
   `;
 
@@ -96,6 +97,35 @@ export function renderLayer2(app, ctx) {
       videoEl.play().catch(() => {});
     }
     unmuteBtn.style.display = 'none';
+  });
+
+  // ── 좋아요 / 공유 / 후원 버튼 (실제로 반응하게) ──
+  const toast = document.getElementById('chzzk-toast');
+  let toastTimer = null;
+  function showToast(msg) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('chzzk-toast--show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('chzzk-toast--show'), 1800);
+  }
+
+  const likeBtn = document.getElementById('like-btn');
+  const likeCountEl = document.getElementById('like-count');
+  let liked = false;
+  likeBtn?.addEventListener('click', () => {
+    liked = !liked;
+    likeBtn.firstChild.textContent = liked ? '❤️ ' : '🤍 ';
+    likeCountEl.textContent = liked ? '1.3K' : '1.2K';
+    likeBtn.classList.toggle('liked', liked);
+  });
+
+  document.getElementById('share-btn')?.addEventListener('click', () => {
+    showToast('링크가 복사되었습니다');
+  });
+
+  document.getElementById('donate-btn')?.addEventListener('click', () => {
+    showToast('🧀 후원해주셔서 감사합니다!');
   });
   const messages = getChatMessages(loop);
   let answered = false;
@@ -183,18 +213,36 @@ export function renderLayer2(app, ctx) {
   sendBtn.addEventListener('click', handleSend);
   input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSend(); });
 
-  // 못 찾으면 루프
-  const loopTimer = setTimeout(() => {
+  // 못 찾으면 루프 — 영상의 실제 길이(정확히 한 바퀴)에 맞춰 리셋되도록 동적으로 설정.
+  // metadata 로딩 전엔 40초로 임시 예약해두고, 로딩되면 정확한 길이로 다시 예약함
+  let loopTimer = setTimeout(triggerLoop, 40000);
+
+  function triggerLoop() {
     if (!answered) {
       addLoop(2);
       document.querySelector('.l2-wrap').classList.add('fade-out');
       setTimeout(ctx.restart, 900);
     }
-  }, 45000);
+  }
+
+  if (videoEl) {
+    if (videoEl.readyState >= 1 && videoEl.duration) {
+      clearTimeout(loopTimer);
+      loopTimer = setTimeout(triggerLoop, Math.round(videoEl.duration * 1000));
+    } else {
+      videoEl.addEventListener('loadedmetadata', () => {
+        if (videoEl.duration && !answered) {
+          clearTimeout(loopTimer);
+          loopTimer = setTimeout(triggerLoop, Math.round(videoEl.duration * 1000));
+        }
+      }, { once: true });
+    }
+  }
 
   return () => {
     clearInterval(viewerTimer);
     clearTimeout(loopTimer);
+    clearTimeout(toastTimer);
     msgTimers.forEach(clearTimeout);
   };
 }
