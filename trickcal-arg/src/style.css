@@ -116,16 +116,27 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .chzzk-stream-area { flex:1; display:flex; flex-direction:column; }
 .chzzk-video { position:relative; background:#000; aspect-ratio:16/9; width:100%; overflow:hidden; }
 
-/* 방송 화면 위 채팅 오버레이 — 좌상단(돋보기)/우상단(책) 게임 UI 배지를 피해 우측 여백에 배치 */
+/* 방송 화면 위 채팅 오버레이 — 실제 영상 UI(좌상단 돋보기 / 우상단 책 / 좌하단 마스크 캠)를 피해
+   좌측 중단 여백에 배치. 좌하단 캠과 겹치지 않도록 bottom 여백을 넉넉히 둠 */
 .chzzk-video-chat-overlay {
   position:absolute;
-  top:14%; right:3%; width:27%; bottom:5%;
+  top:16%; left:2.5%; width:26%; bottom:30%;
   display:flex; flex-direction:column; justify-content:flex-end; gap:3px;
   overflow:hidden;
   pointer-events:none; /* 방송 화면 위 미러일 뿐, 클릭은 우측 실제 채팅에서만 */
   filter: blur(.3px) saturate(.92) brightness(.96); /* 영상 인코딩 압축된 느낌 */
   z-index: 5;
 }
+
+/* 소리 켜기 버튼 (자동재생 정책상 무음 시작 → 탭하면 소리 on) */
+.chzzk-unmute-btn {
+  position:absolute; left:12px; bottom:12px; z-index:6;
+  background:rgba(0,0,0,.6); color:#fff; border:1px solid rgba(255,255,255,.3);
+  border-radius:20px; padding:6px 14px; font-size:12px; cursor:pointer;
+  font-family:var(--font); display:flex; align-items:center; gap:6px;
+  animation: unmutePulse 1.8s ease-in-out infinite;
+}
+@keyframes unmutePulse { 0%,100%{opacity:.85} 50%{opacity:1} }
 .ovc-line {
   font-size: clamp(10px, 1.1vw, 13px);
   line-height: 1.35;
@@ -334,9 +345,9 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 /* ══════════════════════════════════
    8층  치지직 빈 채팅방
 ══════════════════════════════════ */
-.l8-wrap { min-height:100vh; background:#0e0e10; display:flex; flex-direction:column; }
+.l8-wrap { min-height:100vh; background:#0e0e10; display:flex; flex-direction:row; }
 .l8-stream-area { flex:1; background:#000; display:flex; align-items:center; justify-content:center; color:#222; font-size:14px; }
-.l8-chat { width:320px; background:#131317; border-left:1px solid #2a2a2e; display:flex; flex-direction:column; height:100vh; position:fixed; right:0; top:0; }
+.l8-chat { width:320px; flex-shrink:0; background:#131317; border-left:1px solid #2a2a2e; display:flex; flex-direction:column; }
 
 /* ══════════════════════════════════
    9층  붕괴
@@ -362,6 +373,22 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 @media (max-width:768px) {
   .nb-body { flex-direction:column; }
   .nb-sidebar { width:100%; }
-  .chzzk-chat { display:none; }
   .dc-body { flex-direction:column; }
+
+  /* 2층 치지직: 영상 위 / 채팅 아래로 세로 배치. 예전엔 display:none이라
+     모바일에서 채팅(정답 위치)이 아예 안 보여서 진행 불가였음 */
+  .chzzk-body { flex-direction:column; }
+  .chzzk-stream-area { width:100%; }
+  .chzzk-chat {
+    width:100%; max-height:48vh; min-height:220px;
+    border-left:none; border-top:1px solid #2a2a2e;
+  }
+
+  /* 8층: 빈 채팅방도 동일하게 세로 배치 */
+  .l8-wrap { flex-direction:column; }
+  .l8-stream-area { width:100%; min-height:160px; }
+  .l8-chat {
+    width:100%; max-height:48vh; min-height:220px;
+    border-left:none; border-top:1px solid #2a2a2e;
+  }
 }
