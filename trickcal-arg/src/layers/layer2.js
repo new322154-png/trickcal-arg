@@ -21,13 +21,16 @@ export function renderLayer2(app, ctx) {
       <div class="chzzk-body">
         <div class="chzzk-stream-area">
           <div class="chzzk-video">
-            <video autoplay loop muted playsinline
+            <video id="chzzk-video-el" autoplay loop muted playsinline
                    onerror="this.outerHTML='<div class=\'chzzk-video-ph\'>[스트리밍 영상 — /assets/chzzk/stream.mp4]</div>'">
               <source src="/assets/chzzk/stream.mp4" type="video/mp4" />
             </video>
 
-            <!-- 방송 화면 위 채팅 오버레이(미러) — 게임 UI(좌상단 돋보기/우상단 책) 피해서 우측 여백에 배치 -->
+            <!-- 방송 화면 위 채팅 오버레이(미러) — 게임 UI(좌상단 돋보기/우상단 책/좌하단 마스크 캠) 피해서 배치 -->
             <div class="chzzk-video-chat-overlay" id="video-chat-overlay"></div>
+
+            <!-- 자동재생은 브라우저 정책상 무음으로만 가능 → 탭하면 실제 소리 켜짐 -->
+            <button class="chzzk-unmute-btn" id="unmute-btn">🔇 소리 켜기</button>
 
             ${loop >= 4 ? '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:14px;color:rgba(255,255,255,.3);">보고 있어</div>' : ''}
           </div>
@@ -84,6 +87,16 @@ export function renderLayer2(app, ctx) {
 
   const chatArea = document.getElementById('chat-area');
   const overlay  = document.getElementById('video-chat-overlay');
+  const videoEl  = document.getElementById('chzzk-video-el');
+  const unmuteBtn = document.getElementById('unmute-btn');
+
+  unmuteBtn?.addEventListener('click', () => {
+    if (videoEl) {
+      videoEl.muted = false;
+      videoEl.play().catch(() => {});
+    }
+    unmuteBtn.style.display = 'none';
+  });
   const messages = getChatMessages(loop);
   let answered = false;
   const msgTimers = [];
@@ -177,7 +190,7 @@ export function renderLayer2(app, ctx) {
       document.querySelector('.l2-wrap').classList.add('fade-out');
       setTimeout(ctx.restart, 900);
     }
-  }, 32000);
+  }, 45000);
 
   return () => {
     clearInterval(viewerTimer);
