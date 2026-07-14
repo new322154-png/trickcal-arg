@@ -117,14 +117,14 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .chzzk-video { position:relative; background:#000; aspect-ratio:16/9; width:100%; overflow:hidden; }
 
 /* 방송 화면 위 채팅 오버레이 — 실제 영상 UI(좌상단 돋보기 / 우상단 책 / 좌하단 마스크 캠)를 피해
-   좌측 중단 여백에 배치. 좌하단 캠과 겹치지 않도록 bottom 여백을 넉넉히 둠 */
+   돋보기 배지 바로 아래 좁은 영역에만 작게 표시. 배경 그림을 침범하지 않도록 폭/높이 축소 */
 .chzzk-video-chat-overlay {
   position:absolute;
-  top:16%; left:2.5%; width:26%; bottom:30%;
-  display:flex; flex-direction:column; justify-content:flex-end; gap:3px;
+  top:15%; left:3%; width:17%; bottom:46%;
+  display:flex; flex-direction:column; justify-content:flex-end; gap:2px;
   overflow:hidden;
   pointer-events:none; /* 방송 화면 위 미러일 뿐, 클릭은 우측 실제 채팅에서만 */
-  filter: blur(.3px) saturate(.92) brightness(.96); /* 영상 인코딩 압축된 느낌 */
+  filter: blur(.3px) saturate(.9) brightness(.95); /* 영상 인코딩 압축된 느낌 */
   z-index: 5;
 }
 
@@ -138,9 +138,9 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 }
 @keyframes unmutePulse { 0%,100%{opacity:.85} 50%{opacity:1} }
 .ovc-line {
-  font-size: clamp(10px, 1.1vw, 13px);
-  line-height: 1.35;
-  padding: 2px 6px;
+  font-size: clamp(8px, 0.85vw, 11px);
+  line-height: 1.3;
+  padding: 1px 5px;
   border-radius: 3px;
   background: rgba(0,0,0,.32);
   color: #fff;
@@ -157,7 +157,7 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .ovc-line--odd .ovc-text { color:#aaa; font-style:italic; }
 
 @media (max-width: 768px) {
-  .chzzk-video-chat-overlay { width:42%; top:16%; }
+  .chzzk-video-chat-overlay { width:30%; top:14%; bottom:50%; }
 }
 .chzzk-video video, .chzzk-video img { width:100%; height:100%; object-fit:cover; }
 .chzzk-video-ph { width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-size:14px; }
@@ -187,7 +187,16 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .chzzk-btn-share { background:transparent; border:1px solid #3a3a3e; color:#ccc; padding:8px 14px; border-radius:4px; font-size:13px; cursor:pointer; font-family:var(--font); }
 .chzzk-btn-donate { background:var(--chzzk); border:none; color:#000; padding:8px 16px; border-radius:4px; font-size:13px; font-weight:700; cursor:pointer; font-family:var(--font); }
 
-/* 채팅창 */
+.chzzk-btn-like.liked { background:#3a2a2e; color:var(--red); }
+
+.chzzk-toast {
+  position:fixed; bottom:24px; left:50%; transform:translate(-50%, 10px);
+  background:rgba(20,20,24,.95); color:#fff; padding:10px 20px; border-radius:20px;
+  font-size:13px; font-family:var(--font); z-index:999; opacity:0;
+  transition:opacity .25s ease, transform .25s ease; pointer-events:none;
+  border:1px solid rgba(255,255,255,.15);
+}
+.chzzk-toast--show { opacity:1; transform:translate(-50%, 0); }
 .chzzk-chat { width:320px; flex-shrink:0; background:#131317; border-left:1px solid #2a2a2e; display:flex; flex-direction:column; }
 .chzzk-chat-header { padding:14px 16px; border-bottom:1px solid #2a2a2e; display:flex; align-items:center; justify-content:space-between; }
 .chzzk-chat-title { font-size:14px; font-weight:700; color:#e8e8e8; }
