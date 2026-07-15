@@ -106,7 +106,17 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .chzzk-topbar { background:#131317; border-bottom:1px solid #2a2a2e; height:52px; display:flex; align-items:center; padding:0 20px; gap:20px; flex-shrink:0; }
 .chzzk-logo { height:22px; }
 .chzzk-logo-text { font-size:18px; font-weight:900; color:var(--chzzk); letter-spacing:-1px; }
-.chzzk-search { flex:1; max-width:360px; background:#1e1e22; border:1px solid #3a3a3e; border-radius:4px; padding:8px 14px; font-size:13px; color:#e8e8e8; outline:none; font-family:var(--font); }
+.chzzk-search { background:#1e1e22; border:1px solid #3a3a3e; border-radius:4px; padding:8px 14px; font-size:13px; color:#e8e8e8; outline:none; font-family:var(--font); }
+.chzzk-logo-img { height:24px; display:block; }
+.chzzk-icon-menu { width:20px; height:20px; cursor:pointer; filter:invert(1); opacity:.85; }
+.chzzk-search-wrap { flex:1; max-width:360px; position:relative; display:flex; align-items:center; }
+.chzzk-icon-search { position:absolute; left:12px; width:14px; height:14px; opacity:.6; pointer-events:none; filter:invert(1); }
+.chzzk-search-wrap .chzzk-search { padding-left:34px; width:100%; }
+.chzzk-badge-event { height:24px; }
+.chzzk-icon-btn { background:transparent; border:none; cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center; border-radius:50%; }
+.chzzk-icon-btn img { width:18px; height:18px; filter:invert(1); opacity:.8; }
+.chzzk-icon-btn.active img { filter:none; opacity:1; }
+.chzzk-icon-btn:hover { background:#2a2a2e; }
 .chzzk-topbar-right { display:flex; gap:12px; align-items:center; margin-left:auto; }
 .chzzk-topbar-btn { background:transparent; border:1px solid #3a3a3e; color:#ccc; padding:6px 14px; border-radius:4px; font-size:13px; cursor:pointer; font-family:var(--font); }
 .chzzk-topbar-btn--follow { background:var(--chzzk); color:#000; border-color:var(--chzzk); font-weight:700; }
@@ -179,13 +189,18 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .chzzk-streamer-avatar img { width:100%; height:100%; object-fit:cover; }
 .chzzk-info-text { flex:1; }
 .chzzk-stream-title { font-size:15px; font-weight:700; color:#e8e8e8; margin-bottom:4px; }
-.chzzk-streamer-name { font-size:13px; color:#aaa; }
+.chzzk-streamer-name { font-size:13px; color:#aaa; display:flex; align-items:center; gap:4px; }
+.chzzk-icon-verified { width:14px; height:14px; }
+.chzzk-icon-heart { width:16px; height:16px; transition:filter .2s; }
+.chzzk-icon-cheese { width:16px; height:16px; vertical-align:middle; }
+.chzzk-icon-gift { width:16px; height:16px; vertical-align:middle; }
+.chzzk-watermark { position:absolute; right:10px; bottom:10px; width:22px; height:22px; opacity:.55; pointer-events:none; z-index:4; }
 .chzzk-tags { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
 .chzzk-tag { background:#2a2a2e; color:#aaa; font-size:11px; padding:3px 8px; border-radius:2px; }
 .chzzk-info-btns { display:flex; gap:8px; align-items:center; }
 .chzzk-btn-like { display:flex; align-items:center; gap:4px; background:#2a2a2e; border:none; color:#ccc; padding:8px 14px; border-radius:4px; font-size:13px; cursor:pointer; font-family:var(--font); }
 .chzzk-btn-share { background:transparent; border:1px solid #3a3a3e; color:#ccc; padding:8px 14px; border-radius:4px; font-size:13px; cursor:pointer; font-family:var(--font); }
-.chzzk-btn-donate { background:var(--chzzk); border:none; color:#000; padding:8px 16px; border-radius:4px; font-size:13px; font-weight:700; cursor:pointer; font-family:var(--font); }
+.chzzk-btn-donate { background:var(--chzzk); border:none; color:#000; padding:8px 16px; border-radius:4px; font-size:13px; font-weight:700; cursor:pointer; font-family:var(--font); display:flex; align-items:center; gap:5px; }
 
 .chzzk-btn-like.liked { background:#3a2a2e; color:var(--red); }
 
@@ -199,7 +214,11 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .chzzk-toast--show { opacity:1; transform:translate(-50%, 0); }
 .chzzk-chat { width:320px; flex-shrink:0; background:#131317; border-left:1px solid #2a2a2e; display:flex; flex-direction:column; }
 .chzzk-chat-header { padding:14px 16px; border-bottom:1px solid #2a2a2e; display:flex; align-items:center; justify-content:space-between; }
-.chzzk-chat-title { font-size:14px; font-weight:700; color:#e8e8e8; }
+.chzzk-chat-title { font-size:14px; font-weight:700; color:#e8e8e8; display:flex; align-items:center; gap:6px; }
+.chzzk-icon-chat { width:16px; height:16px; filter:invert(1); opacity:.85; }
+.chzzk-chat-header-icons { display:flex; align-items:center; gap:10px; }
+.chzzk-icon-setting, .chzzk-icon-close { width:16px; height:16px; cursor:pointer; filter:invert(1); opacity:.6; }
+.chzzk-icon-setting:hover, .chzzk-icon-close:hover { opacity:1; }
 .chzzk-chat-setting { font-size:18px; color:#666; cursor:pointer; }
 .chzzk-chat-messages { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:6px; }
 .chzzk-chat-msg { display:flex; gap:8px; align-items:flex-start; font-size:13px; }
@@ -217,7 +236,7 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .chzzk-chat-emoji { font-size:18px; cursor:pointer; }
 .chzzk-chat-send { background:var(--chzzk); border:none; color:#000; padding:6px 14px; border-radius:4px; font-size:13px; font-weight:700; cursor:pointer; font-family:var(--font); }
 .chzzk-donate-btns { display:flex; gap:6px; margin-top:8px; }
-.chzzk-cheese-btn { flex:1; background:#2a2a2e; border:none; color:#ccc; padding:8px; border-radius:4px; font-size:12px; cursor:pointer; font-family:var(--font); }
+.chzzk-cheese-btn { flex:1; background:#2a2a2e; border:none; color:#ccc; padding:8px; border-radius:4px; font-size:12px; cursor:pointer; font-family:var(--font); display:flex; align-items:center; justify-content:center; gap:5px; }
 
 /* ══════════════════════════════════
    4층  크롬 404
@@ -393,11 +412,19 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
     border-left:none; border-top:1px solid #2a2a2e;
   }
 
+  /* 상단바는 로고/팔로잉/로그인만 남기고 장식용 아이콘은 숨겨서 공간 확보 */
+  .chzzk-icon-menu, .chzzk-badge-event, .chzzk-search-wrap, #ring-btn { display:none; }
+  .chzzk-topbar { gap:10px; padding:0 12px; }
+  .chzzk-info { flex-wrap:wrap; }
+  .chzzk-info-btns { flex-wrap:wrap; }
+
   /* 8층: 빈 채팅방도 동일하게 세로 배치 */
   .l8-wrap { flex-direction:column; }
   .l8-stream-area { width:100%; min-height:160px; }
   .l8-chat {
     width:100%; max-height:48vh; min-height:220px;
     border-left:none; border-top:1px solid #2a2a2e;
+  -left:none; border-top:1px solid #2a2a2e;
   }
 }
+  
