@@ -11,9 +11,21 @@ export function renderLayer2(app, ctx) {
   app.innerHTML = `
     <div class="l2-wrap fade-in">
       <div class="chzzk-topbar">
-        <span class="chzzk-logo-text">CHZZK</span>
-        <input class="chzzk-search" placeholder="채널, 게임 검색" />
-        <div style="margin-left:auto;display:flex;gap:8px;">
+        <img class="chzzk-icon-menu" src="/assets/chzzk/icon_menu.png" alt="메뉴"
+             onerror="this.style.display='none'" />
+        <img class="chzzk-logo-img" src="/assets/chzzk/logo.png" alt="CHZZK"
+             onerror="this.outerHTML='<span class=\'chzzk-logo-text\'>CHZZK</span>'" />
+        <div class="chzzk-search-wrap">
+          <img class="chzzk-icon-search" src="/assets/chzzk/icon_search.png" alt=""
+               onerror="this.style.display='none'" />
+          <input class="chzzk-search" placeholder="채널, 게임 검색" />
+        </div>
+        <img class="chzzk-badge-event" src="/assets/chzzk/badge_event.png" alt="이벤트"
+             onerror="this.style.display='none'" />
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+          <button class="chzzk-icon-btn" id="ring-btn" title="알림 설정">
+            <img src="/assets/chzzk/icon_ring.png" alt="알림" onerror="this.style.display='none'" />
+          </button>
           <button class="chzzk-topbar-btn">팔로잉</button>
           <button class="chzzk-topbar-btn chzzk-topbar-btn--follow">로그인</button>
         </div>
@@ -32,6 +44,10 @@ export function renderLayer2(app, ctx) {
             <!-- 자동재생은 브라우저 정책상 무음으로만 가능 → 탭하면 실제 소리 켜짐 -->
             <button class="chzzk-unmute-btn" id="unmute-btn">🔇 소리 켜기</button>
 
+            <!-- 실제 방송 플랫폼처럼 우하단에 작은 워터마크 -->
+            <img class="chzzk-watermark" src="/assets/chzzk/icon_zap.png" alt=""
+                 onerror="this.style.display='none'" />
+
             ${loop >= 4 ? '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:14px;color:rgba(255,255,255,.3);">보고 있어</div>' : ''}
           </div>
           <div class="chzzk-controls">
@@ -49,7 +65,11 @@ export function renderLayer2(app, ctx) {
             </div>
             <div class="chzzk-info-text">
               <div class="chzzk-stream-title">${streamTitle}</div>
-              <div class="chzzk-streamer-name">espi_watcher</div>
+              <div class="chzzk-streamer-name">
+                espi_watcher
+                <img class="chzzk-icon-verified" src="/assets/chzzk/icon_verified.png" alt="인증"
+                     onerror="this.style.display='none'" />
+              </div>
               <div class="chzzk-tags">
                 <span class="chzzk-tag"># 트릭컬</span>
                 <span class="chzzk-tag"># 팬게임</span>
@@ -57,16 +77,37 @@ export function renderLayer2(app, ctx) {
               </div>
             </div>
             <div class="chzzk-info-btns">
-              <button class="chzzk-btn-like" id="like-btn">🤍 <span id="like-count">1.2K</span></button>
+              <button class="chzzk-btn-like" id="like-btn">
+                <img class="chzzk-icon-heart" id="heart-icon" src="/assets/chzzk/icon_heart.png" alt="좋아요"
+                     style="filter:grayscale(1) opacity(.6);"
+                     onerror="this.outerHTML='🤍'" />
+                <span id="like-count">1.2K</span>
+              </button>
               <button class="chzzk-btn-share" id="share-btn">공유</button>
-              <button class="chzzk-btn-donate" id="donate-btn">치즈 후원</button>
+              <button class="chzzk-btn-donate" id="donate-btn">
+                <img class="chzzk-icon-cheese" src="/assets/chzzk/icon_cheese.png" alt=""
+                     onerror="this.style.display='none'" />
+                치즈 후원
+              </button>
+              <button class="chzzk-icon-btn" id="more-btn" title="더보기">
+                <img src="/assets/chzzk/icon_more.png" alt="더보기" onerror="this.outerHTML='⋮'" />
+              </button>
             </div>
           </div>
         </div>
         <div class="chzzk-chat">
           <div class="chzzk-chat-header">
-            <span class="chzzk-chat-title">채팅</span>
-            <span class="chzzk-chat-setting">⚙</span>
+            <span class="chzzk-chat-title">
+              <img class="chzzk-icon-chat" src="/assets/chzzk/icon_chat.png" alt=""
+                   onerror="this.style.display='none'" />
+              채팅
+            </span>
+            <div class="chzzk-chat-header-icons">
+              <img class="chzzk-icon-setting" src="/assets/chzzk/icon_more.png" alt="설정"
+                   onerror="this.outerHTML='⚙'" />
+              <img class="chzzk-icon-close" src="/assets/chzzk/icon_close.png" alt="닫기"
+                   onerror="this.style.display='none'" />
+            </div>
           </div>
           <div class="chzzk-chat-messages" id="chat-area"></div>
           <div class="chzzk-chat-input-area">
@@ -76,8 +117,14 @@ export function renderLayer2(app, ctx) {
               <button class="chzzk-chat-send" id="chat2-send">전송</button>
             </div>
             <div class="chzzk-donate-btns">
-              <button class="chzzk-cheese-btn">🧀 치즈 후원</button>
-              <button class="chzzk-cheese-btn">📹 영상 후원</button>
+              <button class="chzzk-cheese-btn">
+                <img class="chzzk-icon-cheese" src="/assets/chzzk/icon_cheese.png" alt=""
+                     onerror="this.outerHTML='🧀'" /> 치즈 후원
+              </button>
+              <button class="chzzk-cheese-btn">
+                <img class="chzzk-icon-gift" src="/assets/chzzk/icon_gift.png" alt=""
+                     onerror="this.outerHTML='🎁'" /> 영상 후원
+              </button>
             </div>
           </div>
         </div>
@@ -112,10 +159,11 @@ export function renderLayer2(app, ctx) {
 
   const likeBtn = document.getElementById('like-btn');
   const likeCountEl = document.getElementById('like-count');
+  const heartIcon = document.getElementById('heart-icon');
   let liked = false;
   likeBtn?.addEventListener('click', () => {
     liked = !liked;
-    likeBtn.firstChild.textContent = liked ? '❤️ ' : '🤍 ';
+    if (heartIcon) heartIcon.style.filter = liked ? 'none' : 'grayscale(1) opacity(.6)';
     likeCountEl.textContent = liked ? '1.3K' : '1.2K';
     likeBtn.classList.toggle('liked', liked);
   });
@@ -126,6 +174,19 @@ export function renderLayer2(app, ctx) {
 
   document.getElementById('donate-btn')?.addEventListener('click', () => {
     showToast('🧀 후원해주셔서 감사합니다!');
+  });
+
+  // ── 알림 / 더보기 버튼 (장식용 반응) ──
+  const ringBtn = document.getElementById('ring-btn');
+  let notif = false;
+  ringBtn?.addEventListener('click', () => {
+    notif = !notif;
+    ringBtn.classList.toggle('active', notif);
+    showToast(notif ? '알림이 설정되었습니다' : '알림이 해제되었습니다');
+  });
+
+  document.getElementById('more-btn')?.addEventListener('click', () => {
+    showToast('추가 메뉴는 준비 중입니다');
   });
   const messages = getChatMessages(loop);
   let answered = false;
