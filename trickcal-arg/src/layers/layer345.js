@@ -121,48 +121,52 @@ export function renderLayer3(app, ctx) {
 
 // ─── 4층 크롬 404 + 커서 조종 (자동 진행) ───
 export function renderLayer4(app, ctx) {
+  const START_URL = 'google.com/search?q=프린터';
+
   app.innerHTML = `
     <div class="l4-wrap fade-in">
       <div class="chrome-browser">
+        <div class="chrome-offline-banner">☁ 인터넷에 연결되지 않음</div>
         <div class="chrome-tabbar">
           <div class="chrome-tab">
             <div class="chrome-tab-favicon">
               <img src="/assets/chrome/favicon.png" onerror="this.style.display='none'" />
             </div>
-            <span class="chrome-tab-title">이 사이트에 연결할 수 없음</span>
+            <span class="chrome-tab-title">인터넷에 연결되지 않음</span>
             <span class="chrome-tab-close">✕</span>
           </div>
           <button class="chrome-new-tab">+</button>
         </div>
         <div class="chrome-toolbar">
-          <button class="chrome-nav-btn" disabled>←</button>
-          <button class="chrome-nav-btn" disabled>→</button>
-          <button class="chrome-nav-btn">↻</button>
           <div class="chrome-addressbar">
-            <span class="chrome-lock">🔒</span>
-            <span class="chrome-url">trickcal-fan.pages.dev/play</span>
-            <span class="chrome-bookmark">☆</span>
+            <span class="chrome-info-icon">ⓘ</span>
+            <span class="chrome-url">${START_URL}</span>
+            <span class="chrome-mic-icon">🎙</span>
           </div>
           <div class="chrome-toolbar-right">
+            <div class="chrome-tab-count">54</div>
             <div class="chrome-ext-icon">⋮</div>
-            <div class="chrome-ext-icon">👤</div>
           </div>
         </div>
         <div class="chrome-content">
           <div class="chrome-dino">
-            <img src="/assets/chrome/dino.png" onerror="this.parentElement.textContent='🦕'" />
+            <img src="/assets/chrome_dino.png" onerror="this.parentElement.textContent='🦕'" />
           </div>
-          <div class="chrome-err-code">ERR_CONNECTION_REFUSED</div>
-          <h1 class="chrome-err-title">이 사이트에 연결할 수 없습니다</h1>
-          <p class="chrome-err-desc">trickcal-fan.pages.dev에서 연결을 거부했습니다.<br>다음을 시도해 보세요: 인터넷 연결 확인</p>
-          <button class="chrome-retry-btn" id="retry-btn">다시 로드</button>
-          <div class="chrome-detail">세부정보 보기</div>
+          <h1 class="chrome-err-title">플레이하려면 공룡을 탭하세요.</h1>
+          <p class="chrome-err-desc">다음 방법을 시도해 보세요.</p>
+          <ul class="chrome-err-list">
+            <li>비행기 모드 사용 중지</li>
+            <li>모바일 데이터 또는 Wi-Fi 사용 설정</li>
+            <li>현재 지역의 신호 확인</li>
+          </ul>
+          <div class="chrome-err-code">ERR_INTERNET_DISCONNECTED</div>
+          <button class="chrome-retry-btn" id="retry-btn">⬇ 페이지 나중에 로드하기</button>
         </div>
       </div>
 
       <div id="fake-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;display:none;">
         <div id="fake-addressbar" style="position:absolute;background:#fff;border:2px solid #1a73e8;border-radius:20px;padding:6px 14px;display:flex;align-items:center;gap:8px;font-size:13px;color:#202124;box-shadow:0 2px 8px rgba(0,0,0,.2);">
-          <span>🔒</span>
+          <span>ⓘ</span>
           <span id="fake-url-text"></span>
           <span style="display:inline-block;width:1px;height:14px;background:#202124;animation:blink .8s infinite;vertical-align:middle;"></span>
         </div>
@@ -236,7 +240,7 @@ export function renderLayer4(app, ctx) {
       fakeAddressbar.style.width = (rect.width - 170) + 'px';
       document.querySelector('.chrome-addressbar').style.visibility = 'hidden';
 
-      const current = 'trickcal-fan.pages.dev/play';
+      const current = START_URL;
       let di = current.length;
       const del = setInterval(() => {
         di--;

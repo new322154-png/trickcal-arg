@@ -13,8 +13,13 @@ export function renderLayer1(app, ctx) {
     <div class="l1-wrap fade-in">
       <div class="nb-topbar">
         <div class="nb-topbar-inner">
-          <span class="nb-logo">BLOG</span>
+          <img class="nb-icon-logo" src="/assets/blog_logo.png" alt="blog"
+               onerror="this.outerHTML='<span class=\'nb-logo\'>BLOG</span>'" />
           <div class="nb-topbar-right">
+            <img class="nb-icon-search" src="/assets/blog_search.png" alt="검색"
+                 onerror="this.style.display='none'" />
+            <img class="nb-icon-hamburger" src="/assets/blog_hamburger.png" alt="메뉴"
+                 onerror="this.style.display='none'" />
             <span>이웃블로그</span><span>블로그홈</span><span class="nb-login">로그인</span>
           </div>
         </div>
@@ -22,7 +27,11 @@ export function renderLayer1(app, ctx) {
 
       <div class="nb-header">
         <div class="nb-header-inner">
-          <div class="nb-blog-title">${titleText}</div>
+          <div class="nb-blog-title">
+            <img class="nb-icon-list" src="/assets/blog_list_icon.png" alt=""
+                 onerror="this.style.display='none'" />
+            ${titleText}
+          </div>
           <div class="nb-blog-sub">교단의 이야기를 기록합니다</div>
           <nav class="nb-menu">
             <span class="nb-menu-item nb-menu-item--active" data-cat="fan">전체글</span>
@@ -46,6 +55,11 @@ export function renderLayer1(app, ctx) {
               </div>
             </div>
             <div class="nb-post-body">
+              <p class="nb-post-tag">[사건 파일 No. 0527]</p>
+              <div class="nb-intro-header">
+                <span class="nb-intro-emoji">🔍</span>
+                <span class="nb-intro-highlight">오늘의 사건</span>을 소개합니다!
+              </div>
               <p>안녕하세요 트릭컬 팬게임 만들어봤습니다 ㅎㅎ</p>
               <p>오래 걸렸는데 드디어 완성됐어요</p>
               <img class="nb-img" src="/assets/blog/screenshot1.webp"
@@ -62,7 +76,18 @@ export function renderLayer1(app, ctx) {
             </div>
 
             <div class="nb-reaction">
-              <button class="nb-like">🤍 <span>23</span></button>
+              <button class="nb-reaction-btn" id="nb-like-btn">
+                <img src="/assets/reaction_heart.png" alt="좋아요" onerror="this.outerHTML='🤍'" />
+                <span id="nb-like-count">23</span>
+              </button>
+              <button class="nb-reaction-btn" id="nb-comment-btn">
+                <img src="/assets/reaction_comment.png" alt="댓글" onerror="this.outerHTML='💬'" />
+                <span>${comments.length}</span>
+              </button>
+              <button class="nb-reaction-btn" id="nb-share-btn">
+                <img src="/assets/reaction_share.png" alt="공유" onerror="this.outerHTML='📤'" />
+                <span>공유</span>
+              </button>
             </div>
 
             <div class="nb-comments">
@@ -84,7 +109,11 @@ export function renderLayer1(app, ctx) {
             </div>
             <div class="nb-profile-name">trickcal_fan</div>
             <div class="nb-profile-sub">트릭컬 팬 블로그</div>
-            <button class="nb-follow">이웃추가</button>
+            <div class="nb-profile-btn-row">
+              <button class="nb-follow">이웃추가</button>
+              <img class="nb-icon-more" src="/assets/blog_more_dots.png" alt="더보기"
+                   onerror="this.outerHTML='⋮'" />
+            </div>
           </div>
           <div class="nb-widget">
             <div class="nb-widget-title">카테고리</div>
@@ -154,6 +183,29 @@ export function renderLayer1(app, ctx) {
         setTimeout(ctx.next, 900);
       });
     });
+
+    // ── 좋아요 / 댓글 / 공유 버튼 (실제로 반응하게) ──
+    const likeBtn = document.getElementById('nb-like-btn');
+    const likeCountEl = document.getElementById('nb-like-count');
+    let liked = false;
+    likeBtn?.addEventListener('click', () => {
+      liked = !liked;
+      likeBtn.classList.toggle('liked', liked);
+      likeCountEl.textContent = 23 + (liked ? 1 : 0);
+    });
+
+    document.getElementById('nb-comment-btn')?.addEventListener('click', () => {
+      document.querySelector('.nb-comments')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    const shareBtn = document.getElementById('nb-share-btn');
+    shareBtn?.addEventListener('click', () => {
+      const span = shareBtn.querySelector('span');
+      if (!span) return;
+      const original = span.textContent;
+      span.textContent = '복사됨';
+      setTimeout(() => { span.textContent = original; }, 1500);
+    });
   }
 
   function otherPostHTML(cat) {
@@ -190,7 +242,7 @@ export function renderLayer1(app, ctx) {
       </div>
       <div class="nb-post-body">
         <p>트릭컬 팬 블로그입니다. 취미로 팬게임 만드는 걸 좋아해요.</p>
-        <p>연락은 댓글로 남겨주세요. 답장은... ■■■을 ■■■니다.</p>
+        <p>연락은 댓글로 남겨주세요. 답장은... 아마 제가 아닐 수도 있습니다.</p>
         <div class="nb-play-wrap">
           <button class="nb-play-btn" id="back-to-fan" style="background:#888;">← 팬게임 글로 돌아가기</button>
         </div>
@@ -230,13 +282,13 @@ export function renderLayer1(app, ctx) {
 function buildComments(loop, returned) {
   const base = [
     { user: '에르핀최고',   text: 'ㅋㅋㅋ에르핀 너무 귀여워' },
-    { user: '완장을왜함',   text: '이거 진짜 추리게임임?' },
+    { user: '트릭컬덕후',   text: '이거 진짜 추리게임임?' },
     { user: 'ㅇㅇ',         text: '해봤는데 뭔가 이상한 것 같은데' },
     { user: '',             text: '이미 시작됐어', odd: true },
-    { user: '긴긴팔다리',     text: '마카샤 나온다고요?? 바로 해봄' },
+    { user: '마카샤팬',     text: '마카샤 나온다고요?? 바로 해봄' },
     { user: 'trickcal_fan', text: '즐겜하세요 ㅎㅎ' },
   ];
-  if (loop >= 5) base.push({ user: '', text: '눈치채기 그렇게 힘든가...?', odd: true });
+  if (loop >= 5) base.push({ user: '', text: '아직도 못 찾았어?', odd: true });
   if (returned)  base.push({ user: '', text: '마지막 방문자: 당신', odd: true });
   return base;
 }

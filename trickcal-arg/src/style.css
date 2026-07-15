@@ -40,12 +40,15 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .nb-topbar { background:var(--green); height:44px; display:flex; align-items:center; }
 .nb-topbar-inner { max-width:1080px; margin:0 auto; padding:0 20px; width:100%; display:flex; justify-content:space-between; align-items:center; }
 .nb-logo { font-size:20px; font-weight:900; color:#fff; letter-spacing:-1px; }
-.nb-topbar-right { display:flex; gap:16px; font-size:13px; color:rgba(255,255,255,.85); cursor:pointer; }
+.nb-icon-logo { height:22px; filter:brightness(0) invert(1); }
+.nb-topbar-right { display:flex; align-items:center; gap:16px; font-size:13px; color:rgba(255,255,255,.85); cursor:pointer; }
+.nb-icon-search, .nb-icon-hamburger { width:16px; height:16px; filter:brightness(0) invert(1); opacity:.85; cursor:pointer; }
 .nb-login { font-weight:700; color:#fff; }
 
 .nb-header { background:#fff; border-bottom:1px solid #e8e8e8; }
 .nb-header-inner { max-width:1080px; margin:0 auto; padding:24px 20px 0; }
-.nb-blog-title { font-size:22px; font-weight:700; color:#222; }
+.nb-blog-title { font-size:22px; font-weight:700; color:#222; display:flex; align-items:center; gap:8px; }
+.nb-icon-list { width:18px; height:18px; }
 .nb-blog-sub { font-size:13px; color:#999; margin-top:4px; }
 .nb-menu { display:flex; margin-top:20px; }
 .nb-menu-item { padding:10px 16px; font-size:14px; color:#666; cursor:pointer; border-bottom:2px solid transparent; }
@@ -68,8 +71,16 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .nb-play-btn:hover { background:#02b350; }
 .nb-small { font-size:12px; color:#bbb; text-align:center; }
 
-.nb-reaction { padding:20px 0; border-top:1px solid #f0f0f0; border-bottom:1px solid #f0f0f0; display:flex; justify-content:center; }
+.nb-reaction { padding:20px 0; border-top:1px solid #f0f0f0; border-bottom:1px solid #f0f0f0; display:flex; justify-content:center; gap:10px; }
+.nb-reaction-btn { display:flex; align-items:center; gap:6px; padding:8px 20px; border:1px solid #e0e0e0; border-radius:20px; background:#fff; font-size:14px; color:#666; cursor:pointer; font-family:var(--font); }
+.nb-reaction-btn img { width:16px; height:16px; }
+.nb-reaction-btn.liked { border-color:#ff6b6b; color:#ff6b6b; }
 .nb-like { display:flex; align-items:center; gap:6px; padding:8px 20px; border:1px solid #e0e0e0; border-radius:20px; background:#fff; font-size:14px; color:#666; cursor:pointer; font-family:var(--font); }
+
+.nb-post-tag { font-size:12px; color:#03c75a; font-weight:700; font-family:var(--mono); }
+.nb-intro-header { font-size:19px; font-weight:900; color:#222; display:flex; align-items:center; gap:6px; margin:4px 0 8px; }
+.nb-intro-emoji { font-size:20px; }
+.nb-intro-highlight { color:var(--green); }
 
 .nb-comments { padding-top:20px; }
 .nb-comments-title { font-size:15px; font-weight:700; color:#222; margin-bottom:16px; }
@@ -86,6 +97,9 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .nb-profile-name { font-size:14px; font-weight:700; color:#222; }
 .nb-profile-sub { font-size:12px; color:#999; }
 .nb-follow { margin-top:8px; padding:6px 20px; border:1px solid var(--green); color:var(--green); background:#fff; border-radius:2px; font-size:13px; cursor:pointer; font-family:var(--font); }
+.nb-profile-btn-row { display:flex; align-items:center; gap:8px; margin-top:8px; }
+.nb-profile-btn-row .nb-follow { margin-top:0; }
+.nb-icon-more { width:16px; height:16px; opacity:.6; cursor:pointer; }
 
 .nb-widget { background:#fff; border:1px solid #e8e8e8; border-radius:4px; padding:16px; }
 .nb-widget-title { font-size:13px; font-weight:700; color:#222; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #f0f0f0; }
@@ -138,6 +152,15 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
   z-index: 5;
 }
 
+/* 소리 켜기 버튼 (자동재생 정책상 무음 시작 → 탭하면 소리 on) */
+.chzzk-unmute-btn {
+  position:absolute; left:12px; bottom:12px; z-index:6;
+  background:rgba(0,0,0,.6); color:#fff; border:1px solid rgba(255,255,255,.3);
+  border-radius:20px; padding:6px 14px; font-size:12px; cursor:pointer;
+  font-family:var(--font); display:flex; align-items:center; gap:6px;
+  animation: unmutePulse 1.8s ease-in-out infinite;
+}
+@keyframes unmutePulse { 0%,100%{opacity:.85} 50%{opacity:1} }
 .ovc-line {
   font-size: clamp(8px, 0.85vw, 11px);
   line-height: 1.3;
@@ -267,11 +290,15 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .chrome-tab-close { color:#666; font-size:14px; cursor:pointer; }
 .chrome-new-tab { background:transparent; border:none; color:#555; font-size:18px; cursor:pointer; padding:4px 8px; margin-left:4px; }
 
+.chrome-offline-banner { background:#202124; color:#fff; font-size:13px; padding:8px 16px; text-align:center; }
 .chrome-toolbar { background:#f1f3f4; border-bottom:1px solid #ddd; padding:8px 12px; display:flex; align-items:center; gap:8px; }
 .chrome-nav-btn { background:none; border:none; color:#555; font-size:16px; cursor:pointer; padding:4px; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; }
 .chrome-nav-btn:disabled { color:#ccc; cursor:default; }
 .chrome-nav-btn:not(:disabled):hover { background:#e8e8e8; }
 .chrome-addressbar { flex:1; background:#fff; border:1px solid #ddd; border-radius:20px; padding:6px 14px; display:flex; align-items:center; gap:8px; font-size:13px; color:#202124; }
+.chrome-info-icon { color:#555; font-size:14px; }
+.chrome-mic-icon { color:#1a73e8; font-size:14px; margin-left:auto; }
+.chrome-tab-count { border:1.5px solid #555; border-radius:4px; width:22px; height:20px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#333; }
 .chrome-lock { color:#555; font-size:14px; }
 .chrome-url { flex:1; color:#202124; }
 .chrome-bookmark { color:#555; font-size:16px; cursor:pointer; }
@@ -290,8 +317,9 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .chrome-dino img { width:120px; }
 .chrome-err-code { font-size:13px; color:#70757a; margin-bottom:8px; }
 .chrome-err-title { font-size:24px; font-weight:400; color:#202124; margin-bottom:8px; }
-.chrome-err-desc { font-size:14px; color:#70757a; max-width:400px; text-align:center; line-height:1.6; margin-bottom:24px; }
-.chrome-retry-btn { background:#1a73e8; color:#fff; border:none; padding:10px 24px; border-radius:4px; font-size:14px; cursor:pointer; font-family:var(--font); }
+.chrome-err-desc { font-size:14px; color:#70757a; max-width:400px; text-align:center; line-height:1.6; margin-bottom:12px; }
+.chrome-err-list { font-size:14px; color:#70757a; line-height:1.9; margin-bottom:20px; text-align:left; padding-left:20px; }
+.chrome-retry-btn { background:none; color:#1a73e8; border:none; padding:10px 0; font-size:14px; cursor:pointer; font-family:var(--font); font-weight:700; }
 .chrome-detail { font-size:12px; color:#70757a; margin-top:16px; cursor:pointer; text-decoration:underline; }
 
 /* ══════════════════════════════════
@@ -318,11 +346,26 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 ══════════════════════════════════ */
 .l6-wrap { min-height:100vh; background:#fff; color:#333; font-size:13px; }
 
-.dc-topbar { background:#e8e8e8; border-bottom:1px solid #ccc; padding:6px 20px; display:flex; align-items:center; gap:16px; font-size:12px; color:#666; }
+.dc-topbar { background:#e8e8e8; border-bottom:1px solid #ccc; padding:6px 20px; display:flex; align-items:center; gap:12px; font-size:12px; color:#666; }
 .dc-logo { font-size:20px; font-weight:900; color:#e63312; }
-.dc-search-wrap { display:flex; gap:0; margin-left:8px; }
+.dc-icon-logo { height:26px; }
+.dc-icon-hamburger { width:18px; height:18px; opacity:.7; cursor:pointer; }
+.dc-search-wrap { flex:1; max-width:320px; margin-left:8px; position:relative; display:flex; align-items:center; }
 .dc-search { border:1px solid #ccc; padding:4px 8px; font-size:12px; width:200px; outline:none; font-family:var(--font); }
+.dc-search-wrap .dc-search { width:100%; padding-right:34px; }
+.dc-icon-search { position:absolute; right:10px; width:14px; height:14px; opacity:.6; pointer-events:none; }
 .dc-search-btn { background:#666; color:#fff; border:none; padding:4px 10px; font-size:12px; cursor:pointer; font-family:var(--font); }
+.dc-recent-btn { margin-left:auto; font-size:11px; color:#888; border:1px solid #ccc; border-radius:3px; padding:3px 8px; background:#fff; white-space:nowrap; }
+
+.dc-subnav { background:#2b3a67; display:flex; gap:20px; padding:10px 20px; font-size:13px; color:#fff; font-weight:700; overflow-x:auto; }
+.dc-subnav-active { color:#ffd23f; }
+
+.dc-gallbar { background:#fff; border-bottom:1px solid #eee; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; }
+.dc-gallbar-title { font-size:17px; font-weight:900; color:#111; }
+.dc-gallbar-m { display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border:1px solid #999; border-radius:50%; font-size:10px; color:#999; margin-left:2px; }
+.dc-gallbar-right { display:flex; align-items:center; gap:14px; font-size:12px; color:#888; }
+.dc-gallbar-setting b { color:#e63312; }
+.dc-gallbar-write { border:1px solid #2b3a67; color:#2b3a67; border-radius:4px; padding:4px 12px; font-weight:700; cursor:pointer; }
 
 .dc-header { background:#e63312; padding:10px 20px; display:flex; align-items:center; gap:20px; }
 .dc-gall-name { font-size:18px; font-weight:700; color:#fff; }
@@ -352,9 +395,14 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
 .dc-post-img-ph { background:#f0f0f0; border:1px solid #e0e0e0; height:180px; display:flex; align-items:center; justify-content:center; color:#aaa; font-size:13px; margin:8px 0; }
 
 .dc-rec-area { border-top:1px solid #eee; padding:12px; display:flex; justify-content:center; gap:8px; }
-.dc-rec-btn { border:1px solid #ccc; background:#fff; padding:6px 20px; font-size:13px; cursor:pointer; font-family:var(--font); }
+.dc-rec-btn { border:1px solid #ccc; background:#fff; padding:6px 20px; font-size:13px; cursor:pointer; font-family:var(--font); display:inline-flex; align-items:center; gap:6px; }
+.dc-icon-concept, .dc-icon-disagree { width:20px; height:20px; }
 .dc-rec-btn--up { color:#e63312; border-color:#e63312; }
 .dc-rec-btn--down { color:#3344aa; border-color:#3344aa; }
+
+.dc-action-row { display:block; width:100%; max-width:520px; margin:10px auto; height:auto; }
+.dc-action-row-fallback { text-align:center; font-size:12px; color:#999; margin:10px 0; }
+.dc-bottom-nav { display:block; width:100%; max-width:640px; margin:16px auto 4px; height:auto; }
 
 .dc-comments { border-top:1px solid #ccc; padding:12px; }
 .dc-comments-title { font-size:14px; font-weight:700; margin-bottom:10px; }
@@ -417,6 +465,8 @@ html, body { height: 100%; font-family: var(--font); overflow-x: hidden; }
   .nb-body { flex-direction:column; }
   .nb-sidebar { width:100%; }
   .dc-body { flex-direction:column; }
+  .dc-gallbar { flex-wrap:wrap; gap:8px; }
+  .dc-gallbar-right { flex-wrap:wrap; gap:8px; }
 
   /* 2층 치지직: 영상 위 / 채팅 아래로 세로 배치. 예전엔 display:none이라
      모바일에서 채팅(정답 위치)이 아예 안 보여서 진행 불가였음 */

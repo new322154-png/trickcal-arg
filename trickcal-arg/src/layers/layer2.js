@@ -343,4 +343,4 @@ export function renderLayer2(app, ctx) {
     clearTimeout(toastTimer);
     msgTimers.forEach(clearTimeout);
   };
-                               }
+}

@@ -7,12 +7,32 @@ export function renderLayer6(app, ctx) {
   app.innerHTML = `
     <div class="l6-wrap fade-in">
       <div class="dc-topbar">
-        <span class="dc-logo">DCINSIDE</span>
+        <img class="dc-icon-logo" src="/assets/dc_logo.png" alt="DC"
+             onerror="this.outerHTML='<span class=\'dc-logo\'>DCINSIDE</span>'" />
+        <img class="dc-icon-hamburger" src="/assets/dc_hamburger.png" alt="메뉴"
+             onerror="this.style.display='none'" />
         <div class="dc-search-wrap">
-          <input class="dc-search" placeholder="갤러리, 게시물 검색" />
-          <button class="dc-search-btn">검색</button>
+          <input class="dc-search" placeholder="갤러리 & 통합검색" />
+          <img class="dc-icon-search" src="/assets/dc_search.png" alt=""
+               onerror="this.style.display='none'" />
         </div>
-        <span style="margin-left:auto;font-size:12px;color:#888;">로그인</span>
+        <span class="dc-recent-btn">최근 방문</span>
+      </div>
+      <div class="dc-subnav">
+        <span>갤러리</span>
+        <span class="dc-subnav-active">마이너갤</span>
+        <span>미니갤</span>
+        <span>인물갤</span>
+        <span>BJ방송 ▾</span>
+      </div>
+      <div class="dc-gallbar">
+        <span class="dc-gallbar-title">트릭컬 <span class="dc-gallbar-m">Ⓜ</span></span>
+        <span class="dc-gallbar-right">
+          <span class="dc-gallbar-info">ⓘ</span>
+          <span class="dc-gallbar-setting">⚙ <b>N</b></span>
+          <span class="dc-gallbar-link">연관</span>
+          <span class="dc-gallbar-write">글쓰기</span>
+        </span>
       </div>
       <div class="dc-header">
         <div>
@@ -42,13 +62,25 @@ export function renderLayer6(app, ctx) {
               <p style="color:#e63312;font-weight:700;">▶ 플레이 링크: [삭제됨]</p>
             </div>
             <div class="dc-rec-area">
-              <button class="dc-rec-btn dc-rec-btn--up" id="dc-rec-up">👍 추천 <span id="dc-rec-count">38</span></button>
-              <button class="dc-rec-btn dc-rec-btn--down" id="dc-rec-down">👎 비추천 <span id="dc-down-count">1</span></button>
+              <button class="dc-rec-btn dc-rec-btn--up" id="dc-rec-up">
+                <img class="dc-icon-concept" src="/assets/dc_concept_btn.png" alt="추천"
+                     onerror="this.outerHTML='👍'" />
+                추천 <span id="dc-rec-count">38</span>
+              </button>
+              <button class="dc-rec-btn dc-rec-btn--down" id="dc-rec-down">
+                <img class="dc-icon-disagree" src="/assets/dc_disagree_btn.png" alt="비추천"
+                     onerror="this.outerHTML='👎'" />
+                비추천 <span id="dc-down-count">1</span>
+              </button>
             </div>
+            <img class="dc-action-row" src="/assets/dc_action_row.png" alt="실베추 스크랩 공유 신고"
+                 onerror="this.outerHTML='<div class=\'dc-action-row-fallback\'>실베추 · 스크랩 · 공유 · 신고</div>'" />
             <div class="dc-comments">
               <div class="dc-comments-title">댓글 <span id="dc-count">0</span>개</div>
               <div id="dc-comment-list"></div>
             </div>
+            <img class="dc-bottom-nav" src="/assets/dc_bottom_nav.png" alt="목록보기 글쓰기"
+                 onerror="this.style.display='none'" />
           </div>
         </div>
       </div>
@@ -259,7 +291,7 @@ export function renderLayer8(app, ctx) {
           setTimeout(ctx.next, 900);
         }, 2000));
       } else {
-        addMsg('', '다시 생각하는 게 좋을 거야', true);
+        addMsg('', '그게 아닌 것 같은데', true);
         timers.push(setTimeout(() => {
           addLoop(8);
           document.querySelector('.l8-wrap').classList.add('fade-out');
@@ -298,4 +330,4 @@ export function renderLayer8(app, ctx) {
   timers.push(noAnswerTimer);
 
   return () => timers.forEach(clearTimeout);
-                   }
+}
