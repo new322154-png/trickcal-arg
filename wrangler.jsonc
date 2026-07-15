@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "trickcal-arg",
+  "compatibility_date": "2026-07-15",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "trickcal-arg"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
